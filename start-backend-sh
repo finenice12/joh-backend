@@ -1,0 +1,38 @@
+#!/data/data/com.termux/files/usr/bin/bash
+
+# --------------------------------
+# Fix Termux $USER warning
+# --------------------------------
+export USER=termux
+export HOME=/data/data/com.termux/files/home
+
+# --------------------------------
+# Stop any old backend or ngrok processes
+# --------------------------------
+pkill node 2>/dev/null
+pkill ngrok 2>/dev/null
+
+# --------------------------------
+# Start backend
+# --------------------------------
+nohup node server.js > backend.log 2>&1 &
+
+# --------------------------------
+# Start ngrok
+# --------------------------------
+nohup ./ngrok http 3000 > ngrok.log 2>&1 &
+
+echo "Backend running on port 3000"
+echo "Ngrok starting..."
+
+# --------------------------------
+# Wait for ngrok to provide a public URL
+# --------------------------------
+while true; do
+    NGROK_URL=$(grep -o 'https://[0-9a-z]\+\.ngrok.io' ngrok.log | head -n1)
+    if [ -n "$NGROK_URL" ]; then
+        echo "Ngrok URL: $NGROK_URL"
+        break
+    fi
+    sleep 1
+done

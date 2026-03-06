@@ -1,0 +1,11 @@
+Server running on port 3000
+Server running on port 3000
+Server running on port 3000
+Server running on port 3000
+Server running on port 3000
+t=2026-03-06T11:01:42+0000 lvl=warn msg="failed to get home directory, using $HOME instead" err="user: Current requires cgo or $USER set in environment" $HOME=/data/data/com.termux/files/home
+Server running on port 3000
+t=2026-03-06T11:04:00+0000 lvl=warn msg="failed to get home directory, using $HOME instead" err="user: Current requires cgo or $USER set in environment" $HOME=/data/data/com.termux/files/home
+Server running on port 3000
+t=2026-03-06T11:06:11+0000 lvl=warn msg="failed to get home directory, using $HOME instead" err="user: Current requires cgo or $USER set in environment" $HOME=/data/data/com.termux/files/home
+Server running on port 3000
