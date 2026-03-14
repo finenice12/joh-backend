@@ -1,0 +1,22 @@
+
+/* Reset */
+* { box-sizing:border-box; margin:0; padding:0; font-family: Arial, sans-serif; }
+body { background-color:#f0f2f5; display:flex; justify-content:center; align-items:flex-start; min-height:100vh; padding:20px; }
+.card { background-color:#fff; padding:25px 30px; border-radius:20px; box-shadow:0 8px 25px rgba(0,0,0,0.15); width:100%; max-width:450px; transition:0.3s; }
+.card h1,h2 { text-align:center; margin-bottom:20px; color:#333; }
+input[type="email"], input[type="password"], input[type="number"] { width:100%; padding:12px; margin-bottom:15px; border-radius:10px; border:1px solid #ccc; font-size:16px; }
+button { width:100%; padding:14px; margin-bottom:10px; border:none; border-radius:12px; font-size:16px; cursor:pointer; display:flex; align-items:center; justify-content:center; gap:8px; transition:0.3s; color:#fff; }
+button:hover { transform:scale(1.03); }
+button.add { background-color:#28a745; }
+button.airtime { background-color:#6f42c1; }
+button.data { background-color:#007bff; }
+button.send { background-color:#fd7e14; }
+button.receive { background-color:#ffc107; color:#333; }
+button.logout { background-color:#dc3545; }
+a { color:#007bff; text-decoration:none; }
+a:hover { text-decoration:underline; }
+#balance { font-weight:bold; color:#28a745; font-size:24px; text-align:center; margin-bottom:20px; }
+#transactionHistory { margin-top:15px; list-style:none; max-height:250px; overflow-y:auto; }
+#transactionHistory li { padding:10px 12px; background-color:#f8f9fa; margin-bottom:8px; border-radius:10px; font-size:14px; display:flex; justify-content:space-between; transition:0.2s; }
+#transactionHistory li:hover { background-color:#e9ecef; }
+@media (max-width:450px){ .card { padding:20px; } button,input { font-size:14px; } }

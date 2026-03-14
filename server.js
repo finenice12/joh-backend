@@ -1,26 +1,28 @@
+// server.js
+import express from "express";
+import dotenv from "dotenv";
 
-require('dotenv').config(); // Load environment variables
-const express = require('express');
+dotenv.config();
 const app = express();
-
 const PORT = process.env.PORT || 3000;
 
-// Root route
+// Middleware (if needed)
+app.use(express.json());
+
+// Root route - this shows your backend is live
 app.get("/", (req, res) => {
   res.send("Backend is running!");
 });
 
-// Airtime API route
-app.get("/airtime", (req, res) => {
-  res.json({ message: "Airtime API working!", key: process.env.AIRTIME_API_KEY });
+// Example API route
+app.get("/api", (req, res) => {
+  res.json({ message: "Hello from joh-backend!" });
 });
 
-// Data API route
-app.get("/data", (req, res) => {
-  res.json({ message: "Data API working!", key: process.env.DATA_API_KEY });
-});
+// Add your existing routes here
+// app.post("/login", ...)
+// app.get("/users", ...)
 
-// Start server
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
 });

@@ -1,0 +1,90 @@
+const db = firebase.firestore()
+
+firebase.auth().onAuthStateChanged(async user => {
+
+if(!user){
+location="login.html"
+return
+}
+
+const doc = await db.collection("users").doc(user.uid).get()
+
+if(doc.exists){
+
+document.getElementById("balance").innerText = doc.data().balance
+
+}else{
+
+await db.collection("users").doc(user.uid).set({
+balance:0,
+email:user.email
+})
+
+document.getElementById("balance").innerText = 0
+
+}
+
+})
+
+async function addMoney(){
+
+let amount = parseInt(prompt("Enter amount"))
+
+if(!amount) return
+
+let user = firebase.auth().currentUser
+
+let ref = db.collection("users").doc(user.uid)
+
+let doc = await ref.get()
+
+let newBalance = doc.data().balance + amount
+
+await ref.update({balance:newBalance})
+
+document.getElementById("balance").innerText = newBalance
+
+alert("Money added")
+
+}
+
+function buyAirtime(){
+
+let amount = prompt("Enter airtime amount")
+
+alert("Airtime purchased ₦"+amount)
+
+}
+
+function buyData(){
+
+let amount = prompt("Enter data amount")
+
+alert("Data purchased ₦"+amount)
+
+}
+
+function sendMoney(){
+
+let email = prompt("Receiver email")
+let amount = prompt("Amount")
+
+alert("₦"+amount+" sent to "+email)
+
+}
+
+function receiveMoney(){
+
+let user = firebase.auth().currentUser
+
+alert("Send money to this email: "+user.email)
+
+}
+
+function logout(){
+
+firebase.auth().signOut()
+
+location="login.html"
+
+}
