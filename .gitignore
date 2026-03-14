@@ -73,3 +73,4 @@ ngrok
 ngrok.zip
 nohup.out
 backend.log
+serviceAccountKey.json
