@@ -3,26 +3,24 @@ import express from "express";
 import dotenv from "dotenv";
 
 dotenv.config();
+
 const app = express();
 const PORT = process.env.PORT || 3000;
 
-// Middleware (if needed)
+// Middleware
 app.use(express.json());
 
-// Root route - this shows your backend is live
+// Root route
 app.get("/", (req, res) => {
   res.send("Backend is running!");
 });
 
-// Example API route
+// API test route
 app.get("/api", (req, res) => {
   res.json({ message: "Hello from joh-backend!" });
 });
 
-// Add your existing routes here
-// app.post("/login", ...)
-// app.get("/users", ...)
-
+// Start server
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
 });
