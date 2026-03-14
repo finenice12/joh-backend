@@ -1,23 +1,32 @@
 // server.js
-import express from "express";
-import dotenv from "dotenv";
+const express = require("express");
+const dotenv = require("dotenv");
 
 dotenv.config();
 
 const app = express();
 const PORT = process.env.PORT || 3000;
 
-// Middleware
 app.use(express.json());
 
-// Root route
+// Home route
 app.get("/", (req, res) => {
-  res.send("Backend is running!");
+  res.send("JOH Backend is running 🚀");
 });
 
-// API test route
+// Test API
 app.get("/api", (req, res) => {
   res.json({ message: "Hello from joh-backend!" });
+});
+
+// Airtime endpoint
+app.get("/buy-airtime", (req, res) => {
+  res.json({ status: "Airtime endpoint ready" });
+});
+
+// Data endpoint
+app.get("/buy-data", (req, res) => {
+  res.json({ status: "Data endpoint ready" });
 });
 
 // Start server
