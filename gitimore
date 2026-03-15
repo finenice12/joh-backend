@@ -1,0 +1,11 @@
+# Node modules
+node_modules/
+
+# Logs
+*.log
+backend.log
+nohup.out
+
+# Env files
+.env
+serviceAccountKey.json
