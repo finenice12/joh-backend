@@ -1,17 +1,27 @@
-# 1️⃣ Make sure SSH agent is running and key is loaded
-eval $(ssh-agent -s)
-ssh-add ~/.ssh/id_ed25519
+# Logs
+logs
+*.log
+backend.log
+ngrok.log
+tunnel.log
+nohup.out
 
-# 2️⃣ Overwrite the conflicted .gitignore with your local version
-# (this removes all conflict markers automatically)
-cp .gitignore .gitignore.bak       # backup just in case
-sed -i '/^<<<<<<<\|^=======\|^>>>>>>>/d' .gitignore
+# Environment files
+.env
 
-# 3️⃣ Mark it as resolved
-git add .gitignore
+# Node modules
+node_modules/
 
-# 4️⃣ Continue the rebase
-git rebase --continue || echo "Rebase complete or no more conflicts"
+# Firebase cache
+.firebase/
+.firebase/hosting..cache
+.firebase/hosting.cHVibGlj.cache
 
-# 5️⃣ Push your main branch to GitHub via SSH
-git push -u origin main
+# Editor & system files
+*.swp
+*.swo
+.DS_Store
+.gitignore.bak
+
+# Optional: ignore ngrok zip/archive
+ngrok.zip
