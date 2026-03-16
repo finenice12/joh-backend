@@ -15,7 +15,21 @@ window.location.href="login.html";
 
 document.getElementById("userEmail").innerText =
 "Logged in as: "+user.email;
+function fundWallet(){
+alert("Fund wallet clicked");
+}
 
+function buyAirtime(){
+alert("Buy airtime clicked");
+}
+
+function buyData(){
+alert("Buy data clicked");
+}
+
+function logout(){
+alert("Logout clicked");
+}
 }
 
 });
