@@ -155,3 +155,36 @@ document.getElementById("userEmail").innerText = user.email;
 }
 
 });
+import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/9.22.1/firebase-auth.js";
+import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/9.22.1/firebase-firestore.js";
+import { app } from "./firebase.js"; // your firebase.js
+
+const auth = getAuth(app);
+const db = getFirestore(app);
+
+// Show logged-in user's email
+const userEmailSpan = document.getElementById("userEmail");
+const balanceDiv = document.getElementById("balance");
+
+onAuthStateChanged(auth, async (user) => {
+  if (user) {
+    userEmailSpan.textContent = user.email;
+
+    // Example: Fetch wallet balance from Firestore
+    const docRef = doc(db, "users", user.uid);
+    const docSnap = await getDoc(docRef);
+    if (docSnap.exists()) {
+      const data = docSnap.data();
+      balanceDiv.textContent = `₦${data.wallet || 0}`;
+    }
+  } else {
+    window.location.href = "login.html"; // redirect if not logged in
+  }
+});
+
+// Logout function
+window.logout = () => {
+  signOut(auth).then(() => {
+    window.location.href = "login.html";
+  });
+};
