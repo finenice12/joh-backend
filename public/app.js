@@ -98,3 +98,33 @@ document.getElementById("backLogin2").onclick=()=>{
 resetBox.style.display="none"
 loginBox.style.display="block"
 }
+// FUND WALLET
+window.fundWallet = function () {
+  alert("Fund wallet feature coming soon");
+};
+
+// BUY AIRTIME
+window.buyAirtime = function () {
+  const phone = document.querySelector("input[placeholder='Phone number']").value;
+  const amount = document.querySelector("input[placeholder='Amount']").value;
+
+  if (!phone || !amount) {
+    alert("Enter phone number and amount");
+    return;
+  }
+
+  alert("Buying airtime for " + phone + " amount ₦" + amount);
+};
+
+// BUY DATA
+window.buyData = function () {
+  const phone = document.querySelector("input[placeholder='Phone number']").value;
+  const plan = document.querySelector("select").value;
+
+  if (!phone) {
+    alert("Enter phone number");
+    return;
+  }
+
+  alert("Buying " + plan + " data for " + phone);
+};
