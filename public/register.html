@@ -1,26 +1,39 @@
 <!DOCTYPE html>
 <html>
 <head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
 <title>Register</title>
+
 <link rel="stylesheet" href="style.css">
+
 </head>
 
 <body>
 
-<div class="login-container">
+<div class="container">
 
 <h2>Create Account</h2>
 
-<input type="email" id="regEmail" placeholder="Email">
+<p>Email</p>
+<input type="email" id="regEmail" placeholder="Enter email">
 
-<input type="password" id="regPassword" placeholder="Password">
+<p>Password</p>
+<input type="password" id="regPass" placeholder="Enter password">
 
-<button id="registerBtn">Register</button>
+<button id="btnRegister">Register</button>
 
-<p>Already have an account? <a href="index.html">Login</a></p>
+<br><br>
+
+<p>
+<a href="login.html">Already have account? Login</a>
+</p>
 
 </div>
 
+<script type="module" src="firebase.js"></script>
 <script type="module" src="register.js"></script>
+
 </body>
 </html>

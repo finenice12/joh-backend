@@ -1,18 +1,32 @@
-import { auth } from "./firebase.js";
-import { createUserWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/12.10.0/firebase-auth.js";
+import { getAuth, createUserWithEmailAndPassword }
+from "https://www.gstatic.com/firebasejs/12.10.0/firebase-auth.js";
 
-const registerBtn = document.getElementById("registerBtn");
+const auth = getAuth();
 
-registerBtn.addEventListener("click", () => {
-  const email = document.getElementById("email").value;
-  const password = document.getElementById("password").value;
+document.getElementById("btnRegister").onclick = () => {
 
-  createUserWithEmailAndPassword(auth, email, password)
-    .then((userCredential) => {
-      alert("Registration successful!");
-      window.location.href = "index.html";
-    })
-    .catch((error) => {
-      alert(error.message);
-    });
+const email = document.getElementById("regEmail").value;
+const pass = document.getElementById("regPass").value;
+
+if(!email || !pass){
+alert("Enter email and password");
+return;
+}
+
+createUserWithEmailAndPassword(auth,email,pass)
+
+.then(() => {
+
+alert("Account created successfully");
+
+window.location.href="login.html";
+
+})
+
+.catch((error)=>{
+
+alert(error.message);
+
 });
+
+};

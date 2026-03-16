@@ -2,33 +2,44 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Register - Glory90</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Register</title>
 <link rel="stylesheet" href="style.css">
 </head>
 <body>
-<div class="card">
-<h2>Register</h2>
-<p>Email: <input type="email" id="regEmail"></p>
-<p>Password: <input type="password" id="regPass"></p>
-<button id="btnRegister">📝 Register</button>
-<p style="text-align:center;"><a href="login.html">Back to Login</a></p>
+
+<div class="container">
+<h2>Create Account</h2>
+
+<p>Email</p>
+<input type="email" id="regEmail" placeholder="Enter email">
+
+<p>Password</p>
+<input type="password" id="regPass" placeholder="Enter password">
+
+<button id="btnRegister">Register</button>
+
+<p style="text-align:center;"><a href="login.html">Already have account? Login</a></p>
 </div>
 
-<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
-<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
-<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
-<script src="firebase.js"></script>
-<script>
-document.getElementById("btnRegister").addEventListener("click", async ()=>{
-  let email=document.getElementById("regEmail").value;
-  let pass=document.getElementById("regPass").value;
-  try{
-    let userCred=await auth.createUserWithEmailAndPassword(email,pass);
-    await db.collection("users").doc(userCred.user.uid).set({email,balance:0});
-    alert("Registered! Please login.");
-    location="login.html";
-  }catch(e){ alert(e.message); }
-});
+<script type="module" src="firebase.js"></script>
+<script type="module">
+import { getAuth, createUserWithEmailAndPassword } 
+from "https://www.gstatic.com/firebasejs/12.10.0/firebase-auth.js";
+
+const auth = getAuth();
+
+document.getElementById("btnRegister").onclick = () => {
+  const email = document.getElementById("regEmail").value;
+  const pass = document.getElementById("regPass").value;
+
+  if(!email || !pass){ alert("Enter email and password"); return; }
+
+  createUserWithEmailAndPassword(auth,email,pass)
+  .then(()=>{ alert("Account created!"); window.location.href="login.html"; })
+  .catch(error => { alert(error.message); });
+};
 </script>
+
 </body>
 </html>

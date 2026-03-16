@@ -12,7 +12,8 @@
 <h2>Login</h2>
 
 <p>Email</p>
-<input type="email" id="loginEmail" placeholder="Enter email">
+<input type="email" id="login
+Email" placeholder="Enter email">
 
 <p>Password</p>
 <input type="password" id="loginPass" placeholder="Enter password">
@@ -21,7 +22,14 @@
 
 <p style="text-align:center;"><a href="register.html">Create Account</a></p>
 </div>
-
+<p style="text-align:center;">
+  <a href="#" id="forgotPassword">Forgot Password?</a>
+</p>
+<div id="resetContainer" style="display:none;">
+  <p>Email: <input type="email" id="resetEmail"></p>
+  <button id="btnReset">Reset Password</button>
+</div>
+<div id="resetMessage"></div>
 <script type="module" src="firebase.js"></script>
 <script type="module">
 import { getAuth, signInWithEmailAndPassword, onAuthStateChanged } 

@@ -3,75 +3,183 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Login - Glory90</title>
+  <title>My App</title>
   <style>
-    body {
-      font-family: Arial, sans-serif;
-      background-color: #f4f4f4;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      height: 100vh;
-      margin: 0;
-    }
-    .login-container {
-      background: #fff;
-      padding: 30px;
-      border-radius: 10px;
-      box-shadow: 0px 4px 15px rgba(0,0,0,0.1);
-      width: 90%;
-      max-width: 400px;
-      text-align: center;
-    }
-    .login-container h2 {
-      margin-bottom: 20px;
-    }
-    .login-container input {
-      width: 100%;
-      padding: 12px;
-      margin: 10px 0;
-      border-radius: 5px;
-      border: 1px solid #ccc;
-      font-size: 16px;
-    }
-    .login-container button {
-      width: 100%;
-      padding: 12px;
-      margin: 10px 0;
-      border: none;
-      border-radius: 5px;
-      background-color: #007bff;
-      color: #fff;
-      font-size: 16px;
-      cursor: pointer;
-    }
-    .login-container button:hover {
-      background-color: #0056b3;
-    }
-    .login-container .link-btn {
-      background-color: transparent;
-      color: #007bff;
-      text-decoration: underline;
-      margin: 5px 0;
-    }
+    body { font-family: Arial, sans-serif; background: #f4f4f4; margin: 0; padding: 0; display: flex; justify-content: center; align-items: center; height: 100vh; }
+    .container { background: white; padding: 20px; border-radius: 8px; width: 300px; box-shadow: 0 2px 8px rgba(0,0,0,0.2); }
+    input { width: 100%; padding: 8px; margin: 6px 0; }
+    button { width: 100%; padding: 10px; margin: 8px 0; cursor: pointer; }
+    a { cursor: pointer; color: blue; text-decoration: underline; }
+    #dashboard { display: none; }
+    #resetContainer { display: none; }
+    #message { color: red; font-size: 14px; }
   </style>
 </head>
 <body>
 
-  <div class="login-container">
-    <h2>Login</h2>
-    
-    <input type="email" id="email" placeholder="Enter your email">
-    <input type="password" id="password" placeholder="Enter your password">
-    
-    <button id="loginBtn">Login</button>
-    <button id="forgotPassword" class="link-btn">Forgot Password?</button>
+<div class="container" id="authContainer">
+  <h2>Login</h2>
+  <input type="email" id="loginEmail" placeholder="Email">
+  <input type="password" id="loginPass" placeholder="Password">
+  <button id="btnLogin">Login</button>
 
-    <p>Don't have an account? <a href="register.html">Register</a></p>
+  <p><a id="showRegister">Don't have an account? Register</a></p>
+  <p><a id="forgotPassword">Forgot Password?</a></p>
+
+  <div id="resetContainer">
+    <input type="email" id="resetEmail" placeholder="Enter your email">
+    <button id="btnReset">Reset Password</button>
+    <p id="resetMessage"></p>
   </div>
 
-  <!-- Import login.js -->
-  <script type="module" src="login.js"></script>
+  <div id="message"></div>
+</div>
+
+<div class="container" id="registerContainer" style="display:none;">
+  <h2>Register</h2>
+  <input type="email" id="registerEmail" placeholder="Email">
+  <input type="password" id="registerPass" placeholder="Password">
+  <button id="btnRegister">Register</button>
+  <p><a id="showLogin">Already have an account? Login</a></p>
+  <div id="registerMessage"></div>
+</div>
+
+<div class="container" id="dashboard">
+  <h2>Dashboard</h2>
+  <p>Welcome, <span id="userEmail"></span></p>
+  <button id="btnLogout">Logout</button>
+</div>
+
+<script type="module">
+  // Firebase SDK
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/12.10.0/firebase-app.js";
+  import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, signOut, sendPasswordResetEmail, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/12.10.0/firebase-auth.js";
+
+  const firebaseConfig = {
+    apiKey: "AIzaSyBH99sxcNphY_EoK4xPVmMFEV_2pWRCBiM",
+    authDomain: "glory90-85e7c.firebaseapp.com",
+    projectId: "glory90-85e7c",
+    storageBucket: "glory90-85e7c.firebasestorage.app",
+    messagingSenderId: "986038538950",
+    appId: "1:986038538950:web:19914a0889519f05ea7dc7",
+    measurementId: "G-TVZXQN6YWW"
+  };
+
+  const app = initializeApp(firebaseConfig);
+  const auth = getAuth();
+
+  // Elements
+  const loginEmail = document.getElementById('loginEmail');
+  const loginPass = document.getElementById('loginPass');
+  const btnLogin = document.getElementById('btnLogin');
+  const authContainer = document.getElementById('authContainer');
+  const dashboard = document.getElementById('dashboard');
+  const userEmailEl = document.getElementById('userEmail');
+  const btnLogout = document.getElementById('btnLogout');
+  const showRegister = document.getElementById('showRegister');
+  const registerContainer = document.getElementById('registerContainer');
+  const showLogin = document.getElementById('showLogin');
+  const registerEmail = document.getElementById('registerEmail');
+  const registerPass = document.getElementById('registerPass');
+  const btnRegister = document.getElementById('btnRegister');
+  const registerMessage = document.getElementById('registerMessage');
+  const forgotPassword = document.getElementById('forgotPassword');
+  const resetContainer = document.getElementById('resetContainer');
+  const resetEmail = document.getElementById('resetEmail');
+  const btnReset = document.getElementById('btnReset');
+  const resetMessage = document.getElementById('resetMessage');
+  const message = document.getElementById('message');
+
+  // Show Register
+  showRegister.addEventListener('click', () => {
+    authContainer.style.display = 'none';
+    registerContainer.style.display = 'block';
+    resetContainer.style.display = 'none';
+    message.textContent = '';
+  });
+
+  // Show Login
+  showLogin.addEventListener('click', () => {
+    authContainer.style.display = 'block';
+    registerContainer.style.display = 'none';
+    resetContainer.style.display = 'none';
+    message.textContent = '';
+  });
+
+  // Login
+  btnLogin.addEventListener('click', () => {
+    const email = loginEmail.value;
+    const pass = loginPass.value;
+    if (!email || !pass) {
+      message.textContent = "Please enter email and password";
+      return;
+    }
+    signInWithEmailAndPassword(auth, email, pass)
+      .then((userCredential) => {
+        loginEmail.value = loginPass.value = '';
+      })
+      .catch((error) => {
+        message.textContent = error.message;
+      });
+  });
+
+  // Register
+  btnRegister.addEventListener('click', () => {
+    const email = registerEmail.value;
+    const pass = registerPass.value;
+    if (!email || !pass) {
+      registerMessage.textContent = "Please enter email and password";
+      return;
+    }
+    createUserWithEmailAndPassword(auth, email, pass)
+      .then((userCredential) => {
+        registerEmail.value = registerPass.value = '';
+      })
+      .catch((error) => {
+        registerMessage.textContent = error.message;
+      });
+  });
+
+  // Logout
+  btnLogout.addEventListener('click', () => {
+    signOut(auth);
+  });
+
+  // Password Reset
+  forgotPassword.addEventListener('click', () => {
+    resetContainer.style.display = 'block';
+    message.textContent = '';
+  });
+
+  btnReset.addEventListener('click', () => {
+    const email = resetEmail.value;
+    if (!email) {
+      resetMessage.textContent = "Enter your email";
+      return;
+    }
+    sendPasswordResetEmail(auth, email)
+      .then(() => {
+        resetMessage.textContent = "Password reset email sent!";
+      })
+      .catch((error) => {
+        resetMessage.textContent = error.message;
+      });
+  });
+
+  // Auth state observer
+  onAuthStateChanged(auth, (user) => {
+    if (user) {
+      authContainer.style.display = 'none';
+      registerContainer.style.display = 'none';
+      resetContainer.style.display = 'none';
+      dashboard.style.display = 'block';
+      userEmailEl.textContent = user.email;
+    } else {
+      dashboard.style.display = 'none';
+      authContainer.style.display = 'block';
+    }
+  });
+</script>
 
 </body>
 </html>

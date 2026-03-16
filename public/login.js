@@ -1,29 +1,20 @@
-import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
-import { getAuth, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+// login.js
+import { getAuth, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/12.10.0/firebase-auth.js";
 
-import { firebaseConfig } from "./firebase.js";
+const auth = getAuth();
 
-const app = initializeApp(firebaseConfig);
-const auth = getAuth(app);
+document.getElementById("btnLogin").addEventListener("click", () => {
+  const email = document.getElementById("loginEmail").value;
+  const password = document.getElementById("loginPass").value;
 
-document.addEventListener("DOMContentLoaded", () => {
+  if (!email || !password) return alert("Please enter email and password");
 
-  const loginBtn = document.getElementById("loginBtn");
-
-  loginBtn.addEventListener("click", () => {
-
-    const email = document.getElementById("email").value;
-    const password = document.getElementById("password").value;
-
-    signInWithEmailAndPassword(auth, email, password)
-      .then((userCredential) => {
-        alert("Login successful!");
-        console.log(userCredential.user);
-      })
-      .catch((error) => {
-        alert(error.message);
-      });
-
-  });
-
+  signInWithEmailAndPassword(auth, email, password)
+    .then(() => {
+      alert("Login successful!");
+      window.location.href = "dashboard.html";
+    })
+    .catch((error) => {
+      alert("Error: " + error.message);
+    });
 });
