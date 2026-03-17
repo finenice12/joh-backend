@@ -1,69 +1,61 @@
-// USER EMAIL (temporary)
-document.getElementById("userEmail").innerText = "user@email.com";
+import { auth } from "./firebase.js";
+import {
+  onAuthStateChanged,
+  signOut
+} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+
+// CHECK USER LOGIN
+onAuthStateChanged(auth, (user) => {
+
+  if (!user) {
+    window.location.href = "login.html";
+  } else {
+    document.getElementById("userEmail").innerText = user.email;
+  }
+
+});
 
 // LOGOUT
-window.logout = function(){
-alert("Logout clicked");
+window.logout = function () {
+  signOut(auth).then(() => {
+    window.location.href = "login.html";
+  });
 };
 
 // FUND WALLET
-window.fundWallet = function(){
+window.fundWallet = function () {
 
-const amount = document.getElementById("amount").value;
+  const amount = document.getElementById("amount").value;
 
-if(!amount){
-alert("Enter amount");
-return;
-}
+  if (!amount) {
+    alert("Enter amount");
+    return;
+  }
 
-FlutterwaveCheckout({
+  FlutterwaveCheckout({
+    public_key: "YOUR_FLUTTERWAVE_KEY",
+    tx_ref: "tx_" + Date.now(),
+    amount: amount,
+    currency: "NGN",
 
-public_key: "FLWPUBK_TEST-xxxxxxxxx-X",
+    callback: function (data) {
+      alert("Payment successful");
+    },
 
-tx_ref: "tx_" + Date.now(),
+    customer: {
+      email: auth.currentUser.email
+    }
 
-amount: amount,
-
-currency: "NGN",
-
-callback: function(data){
-alert("Payment successful");
-},
-
-customer:{
-email:"test@email.com"
-}
-
-});
+  });
 
 };
 
 // BUY AIRTIME
-window.buyAirtime = function(){
-
-const phone = document.getElementById("airtimePhone").value;
-const amount = document.getElementById("airtimeAmount").value;
-
-if(!phone || !amount){
-alert("Enter phone and amount");
-return;
-}
-
-alert("Buying airtime for " + phone);
-
+window.buyAirtime = function () {
+  alert("Airtime feature coming next");
 };
 
 // BUY DATA
-window.buyData = function(){
-
-const phone = document.getElementById("dataPhone").value;
-const plan = document.getElementById("dataPlan").value;
-
-if(!phone){
-alert("Enter phone");
-return;
-}
-
-alert("Buying " + plan + " for " + phone);
-
+window.buyData = function () {
+  alert("Data feature coming next");
 };
