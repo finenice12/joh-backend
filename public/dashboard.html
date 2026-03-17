@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Dashboard</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+  <h2>🏦 My Fintech</h2>
+
+  <p id="userEmail"></p>
+
+  <button onclick="logout()">Logout</button>
+
+  <hr>
+
+  <h3>💰 Wallet Balance</h3>
+  <h2 id="balance">₦0</h2>
+
+  <input type="number" id="amount" placeholder="Enter amount">
+  <button onclick="fundWallet()">Fund Wallet</button>
+
+  <hr>
+
+  <h3>📱 Buy Airtime</h3>
+  <button onclick="buyAirtime()">Buy Airtime (₦100)</button>
+
+  <hr>
+
+  <h3>🌐 Buy Data</h3>
+  <button onclick="buyData()">Buy Data (₦200)</button>
+
+  <hr>
+
+  <h3>🧾 Transactions</h3>
+  <ul id="txList"></ul>
+
+  <script type="module" src="app.js"></script>
+
+</body>
+</html>
