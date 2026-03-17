@@ -1,60 +1,119 @@
-bxody{
-font-family: Arial, sans-serif;
-background:#f4f6fb;
-margin:0;
+body {
+  font-family: 'Roboto', sans-serif;
+  background: #f0f2f5;
+  margin: 0;
+  padding: 0;
 }
 
-/* HEADER */
-.header{
-background:white;
-padding:15px 25px;
-display:flex;
-justify-content:space-between;
-align-items:center;
-box-shadow:0 2px 10px rgba(0,0,0,0.05);
+header {
+  background: #039be5;
+  color: white;
+  padding: 20px;
+  text-align: center;
+  position: sticky;
+  top: 0;
+  z-index: 10;
 }
 
-/* CONTAINER */
-.container{
-padding:25px;
+header h2 {
+  margin: 0;
 }
 
-/* CARD */
-.card{
-background:white;
-padding:20px;
-margin-bottom:20px;
-border-radius:10px;
-box-shadow:0 5px 15px rgba(0,0,0,0.05);
+header p {
+  margin: 5px 0;
 }
 
-/* BALANCE */
-.balance{
-font-size:30px;
-font-weight:bold;
-color:#16a34a;
+.logout-btn {
+  background: #ff5252;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: 0.2s;
 }
 
-/* BUTTON */
-button{
-background:#1a73e8;
-color:white;
-border:none;
-padding:10px 15px;
-border-radius:6px;
-cursor:pointer;
-margin-top:10px;
+.logout-btn:hover {
+  background: #e04848;
 }
 
-button:hover{
-background:#1557b0;
+main {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 20px;
+  padding: 20px;
 }
 
-/* INPUT */
-input, select{
-width:100%;
-padding:10px;
-margin-top:8px;
-border-radius:5px;
-border:1px solid #ccc;
+/* Card style */
+.card {
+  background: white;
+  border-radius: 15px;
+  padding: 20px;
+  width: 280px;
+  box-shadow: 0 8px 16px rgba(0,0,0,0.1);
+  text-align: center;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 12px 24px rgba(0,0,0,0.15);
+}
+
+.card h3 {
+  color: #555;
+  margin-bottom: 15px;
+}
+
+/* Buttons inside card */
+.card button {
+  background: #039be5;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  margin: 5px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.card button:hover {
+  background: #0277bd;
+}
+
+input[type="number"] {
+  width: 80%;
+  padding: 10px;
+  margin: 10px 0;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+}
+
+/* Transactions list */
+ul#txList {
+  list-style: none;
+  padding: 0;
+  text-align: left;
+  max-height: 200px;
+  overflow-y: auto;
+}
+
+ul#txList li {
+  background: #f1f3f6;
+  margin: 6px 0;
+  padding: 10px;
+  border-radius: 6px;
+  font-size: 14px;
+  color: #333;
+}
+
+/* Responsive */
+@media (max-width: 700px) {
+  main {
+    flex-direction: column;
+    align-items: center;
+  }
+  .card {
+    width: 90%;
+  }
 }

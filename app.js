@@ -1,190 +1,139 @@
-import { app } from "./firebase.js";
+import { initializeApp } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-app.js";
+import { getFirestore, doc, getDoc, setDoc, updateDoc, arrayUnion } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore.js";
+import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-auth.js";
 
-import {
-getAuth,
-signInWithEmailAndPassword,
-createUserWithEmailAndPassword,
-sendPasswordResetEmail,
-signOut,
-onAuthStateChanged
-} from "https://www.gstatic.com/firebasejs/12.10.0/firebase-auth.js";
+// Firebase config
+const firebaseConfig = {
+  apiKey: "AIzaSyBH99sxcNphY_EoK4xPVmMFEV_2pWRCBiM",
+  authDomain: "glory90-85e7c.firebaseapp.com",
+  projectId: "glory90-85e7c",
+  storageBucket: "glory90-85e7c.firebasestorage.app",
+  messagingSenderId: "986038538950",
+  appId: "1:986038538950:web:19914a0889519f05ea7dc7",
+  measurementId: "G-TVZXQN6YWW"
+};
 
-const auth = getAuth(app);
-
-
-/* LOGIN */
-document.getElementById("btnLogin").onclick = () => {
-
-const email=document.getElementById("loginEmail").value
-const pass=document.getElementById("loginPass").value
-
-signInWithEmailAndPassword(auth,email,pass)
-.catch(e=>alert(e.message))
-
-}
-
-
-/* REGISTER */
-document.getElementById("btnRegister").onclick = () => {
-
-const email=document.getElementById("regEmail").value
-const pass=document.getElementById("regPass").value
-
-createUserWithEmailAndPassword(auth,email,pass)
-.catch(e=>alert(e.message))
-
-}
-
-
-/* RESET */
-document.getElementById("btnReset").onclick = () => {
-
-const email=document.getElementById("resetEmail").value
-
-sendPasswordResetEmail(auth,email)
-.then(()=>alert("Reset email sent"))
-.catch(e=>alert(e.message))
-
-}
-
-
-/* LOGOUT */
-document.getElementById("btnLogout").onclick = () => {
-
-signOut(auth)
-
-}
-
-
-/* AUTH STATE */
-onAuthStateChanged(auth,user=>{
-
-if(user){
-
-document.getElementById("loginBox").style.display="none"
-document.getElementById("registerBox").style.display="none"
-document.getElementById("resetBox").style.display="none"
-document.getElementById("dashBox").style.display="block"
-
-document.getElementById("userEmail").innerText="Logged in as: "+user.email
-
-}else{
-
-document.getElementById("loginBox").style.display="block"
-document.getElementById("dashBox").style.display="none"
-
-}
-
-})
-
-
-/* PAGE SWITCH */
-document.getElementById("showRegister").onclick=()=>{
-loginBox.style.display="none"
-registerBox.style.display="block"
-}
-
-document.getElementById("showReset").onclick=()=>{
-loginBox.style.display="none"
-resetBox.style.display="block"
-}
-
-document.getElementById("backLogin1").onclick=()=>{
-registerBox.style.display="none"
-loginBox.style.display="block"
-}
-
-document.getElementById("backLogin2").onclick=()=>{
-resetBox.style.display="none"
-loginBox.style.display="block"
-}
-document.getElementById("payBtn").onclick = () => {
-
-const amount=document.getElementById("amount").value
-
-if(!amount){
-alert("Enter amount")
-return
-}
-
-FlutterwaveCheckout({
-
-public_key: "FLWPUBK_TEST-xxxxxxxxxxxxx",
-
-tx_ref: "wallet-"+Date.now(),
-
-amount: amount,
-
-currency: "NGN",
-
-payment_options: "card,banktransfer,ussd",
-
-customer: {
-
-email: document.getElementById("userEmail").innerText
-
-},
-
-callback: function(data){
-
-alert("Payment Successful")
-
-},
-
-customizations: {
-
-title: "Wallet Funding",
-
-description: "Add money to wallet"
-
-}
-
-})
-
-}
-import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/12.10.0/firebase-auth.js";
-
-const auth = getAuth();
-
-onAuthStateChanged(auth,(user)=>{
-
-if(user){
-
-document.getElementById("userEmail").innerText = user.email;
-
-}
-
-});
-import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/9.22.1/firebase-auth.js";
-import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/9.22.1/firebase-firestore.js";
-import { app } from "./firebase.js"; // your firebase.js
-
-const auth = getAuth(app);
+const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
+const auth = getAuth(app);
 
-// Show logged-in user's email
-const userEmailSpan = document.getElementById("userEmail");
-const balanceDiv = document.getElementById("balance");
+const balanceEl = document.getElementById("balance");
+const userEmailEl = document.getElementById("userEmail");
+const txListEl = document.getElementById("txList");
+const amountInput = document.getElementById("amount");
 
+let currentUser = null;
+
+// ----------------- AUTH -----------------
 onAuthStateChanged(auth, async (user) => {
   if (user) {
-    userEmailSpan.textContent = user.email;
+    currentUser = user;
+    userEmailEl.textContent = `Welcome, ${user.email}`;
 
-    // Example: Fetch wallet balance from Firestore
-    const docRef = doc(db, "users", user.uid);
-    const docSnap = await getDoc(docRef);
-    if (docSnap.exists()) {
-      const data = docSnap.data();
-      balanceDiv.textContent = `₦${data.wallet || 0}`;
+    const userRef = doc(db, "users", user.uid);
+    const userSnap = await getDoc(userRef);
+
+    if (userSnap.exists()) {
+      const data = userSnap.data();
+      balanceEl.textContent = `₦${data.balance || 0}`;
+      renderTransactions(data.transactions || []);
+    } else {
+      await setDoc(userRef, { balance: 0, transactions: [] });
+      renderTransactions([]);
     }
   } else {
-    window.location.href = "login.html"; // redirect if not logged in
+    window.location.href = "login.html";
   }
 });
 
-// Logout function
-window.logout = () => {
-  signOut(auth).then(() => {
-    window.location.href = "login.html";
+// ----------------- FUND WALLET -----------------
+async function fundWallet() {
+  const amount = parseFloat(amountInput.value);
+  if (!amount || amount <= 0) {
+    alert("Enter a valid amount");
+    return;
+  }
+
+  const userRef = doc(db, "users", currentUser.uid);
+  const userSnap = await getDoc(userRef);
+  const data = userSnap.data();
+  const newBalance = (data.balance || 0) + amount;
+
+  await updateDoc(userRef, {
+    balance: newBalance,
+    transactions: arrayUnion(`Funded wallet: ₦${amount.toFixed(2)}`)
   });
-};
+
+  balanceEl.textContent = `₦${newBalance.toFixed(2)}`;
+  renderTransactions((data.transactions || []).concat([`Funded wallet: ₦${amount.toFixed(2)}`]));
+  amountInput.value = "";
+  alert("Wallet funded!");
+}
+
+// ----------------- BUY AIRTIME -----------------
+async function buyAirtime() {
+  const amount = parseFloat(prompt("Enter Airtime amount"));
+  if (!amount || amount <= 0) return alert("Invalid amount");
+
+  const userRef = doc(db, "users", currentUser.uid);
+  const userSnap = await getDoc(userRef);
+  const data = userSnap.data();
+
+  if ((data.balance || 0) < amount) return alert("Insufficient balance");
+
+  const newBalance = data.balance - amount;
+
+  await updateDoc(userRef, {
+    balance: newBalance,
+    transactions: arrayUnion(`Bought Airtime: ₦${amount.toFixed(2)}`)
+  });
+
+  balanceEl.textContent = `₦${newBalance.toFixed(2)}`;
+  renderTransactions((data.transactions || []).concat([`Bought Airtime: ₦${amount.toFixed(2)}`]));
+  alert("Airtime purchased!");
+}
+
+// ----------------- BUY DATA -----------------
+async function buyData() {
+  const plan = prompt("Enter Data plan amount");
+  const amount = parseFloat(plan);
+  if (!amount || amount <= 0) return alert("Invalid amount");
+
+  const userRef = doc(db, "users", currentUser.uid);
+  const userSnap = await getDoc(userRef);
+  const data = userSnap.data();
+
+  if ((data.balance || 0) < amount) return alert("Insufficient balance");
+
+  const newBalance = data.balance - amount;
+
+  await updateDoc(userRef, {
+    balance: newBalance,
+    transactions: arrayUnion(`Bought Data: ₦${amount.toFixed(2)}`)
+  });
+
+  balanceEl.textContent = `₦${newBalance.toFixed(2)}`;
+  renderTransactions((data.transactions || []).concat([`Bought Data: ₦${amount.toFixed(2)}`]));
+  alert("Data purchased!");
+}
+
+// ----------------- LOGOUT -----------------
+function logout() {
+  if (confirm("Logout now?")) {
+    signOut(auth).then(() => window.location.href = "login.html");
+  }
+}
+
+// ----------------- RENDER TRANSACTIONS -----------------
+function renderTransactions(transactions) {
+  txListEl.innerHTML = "";
+  if (!transactions.length) {
+    txListEl.innerHTML = "<li>No transactions yet</li>";
+    return;
+  }
+  transactions.forEach(tx => {
+    const li = document.createElement("li");
+    li.textContent = tx;
+    txListEl.appendChild(li);
+  });
+}
