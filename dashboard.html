@@ -8,43 +8,36 @@
 </head>
 <body>
   <header>
-    <h2>💰 My Fintech</h2>
-    <p id="userEmail">Welcome, user@example.com</p>
-    <button onclick="logout()" class="logout-btn">Logout</button>
+    <h1>My Fintech</h1>
+    <button id="btnLogout">Logout</button>
   </header>
 
-  <main>
-    <!-- WALLET -->
-    <div class="card">
-      <h3>💵 Wallet Balance</h3>
-      <p id="balance">₦0.00</p>
-      <input type="number" id="amount" placeholder="Enter amount">
-      <button onclick="fundWallet()">Fund Wallet</button>
-    </div>
+  <section id="wallet">
+    <h2>Wallet Balance</h2>
+    <p id="balance">₦0.00</p>
+    <input type="number" id="amount" placeholder="Enter amount to fund">
+    <button id="btnFund">Fund Wallet</button>
+  </section>
 
-    <!-- BUY AIRTIME -->
-    <div class="card">
-      <h3>📱 Buy Airtime</h3>
-      <button onclick="buyAirtime()">Buy Airtime</button>
-    </div>
+  <section id="buy-airtime">
+    <h2>Buy Airtime</h2>
+    <button id="btnAirtime">Buy Airtime</button>
+  </section>
 
-    <!-- BUY DATA -->
-    <div class="card">
-      <h3>📶 Buy Data</h3>
-      <button onclick="buyData()">500MB</button>
-      <button onclick="buyData()">1GB</button>
-      <button onclick="buyData()">2GB</button>
-    </div>
+  <section id="buy-data">
+    <h2>Buy Data</h2>
+    <button id="btnData">Buy Data</button>
+  </section>
 
-    <!-- TRANSACTIONS -->
-    <div class="card">
-      <h3>📝 Transactions</h3>
-      <ul id="txList">
-        <li>No transactions yet</li>
-      </ul>
-    </div>
-  </main>
-
-  <script type="module" src="app.js"></script>
+  <section id="transactions">
+    <h2>Transactions</h2>
+    <ul id="txList">
+      <li>No transactions yet</li>
+    </ul>
+  </section>
+<script type="module" src="app.js"></script>
+<script type="module" src="dashboard.js"></script>
+<script type="module" src="login.js"></script>
+<script type="module" src="register.js"></script>
 </body>
 </html>

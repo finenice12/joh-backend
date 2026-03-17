@@ -1,19 +1,7 @@
-// FUND WALLET
-function fundWallet(){
-  alert("Fund wallet clicked");
-}
+import { fundWallet, buyAirtime, buyData, logout } from './app.js';
 
-// BUY AIRTIME
-function buyAirtime(){
-  alert("Buy airtime clicked");
-}
+document.getElementById("btnFund").addEventListener("click", fundWallet);
+document.getElementById("btnAirtime").addEventListener("click", buyAirtime);
+document.getElementById("btnData").addEventListener("click", buyData);
+document.getElementById("btnLogout").addEventListener("click", logout);o
 
-// BUY DATA
-function buyData(){
-  alert("Buy data clicked");
-}
-
-// LOGOUT
-function logout(){
-  alert("Logout clicked");
-}
