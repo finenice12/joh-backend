@@ -32,10 +32,7 @@ window.fundWallet = function () {
     return;
   }
 
-  FlutterwaveCheckout({
-    public_key: "YOUR_FLUTTERWAVE_KEY",
-    tx_ref: "tx_" + Date.now(),
-    amount: amount,
+      amount: amount,
     currency: "NGN",
 
     callback: function (data) {
