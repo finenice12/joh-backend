@@ -1,0 +1,60 @@
+bxody{
+font-family: Arial, sans-serif;
+background:#f4f6fb;
+margin:0;
+}
+
+/* HEADER */
+.header{
+background:white;
+padding:15px 25px;
+display:flex;
+justify-content:space-between;
+align-items:center;
+box-shadow:0 2px 10px rgba(0,0,0,0.05);
+}
+
+/* CONTAINER */
+.container{
+padding:25px;
+}
+
+/* CARD */
+.card{
+background:white;
+padding:20px;
+margin-bottom:20px;
+border-radius:10px;
+box-shadow:0 5px 15px rgba(0,0,0,0.05);
+}
+
+/* BALANCE */
+.balance{
+font-size:30px;
+font-weight:bold;
+color:#16a34a;
+}
+
+/* BUTTON */
+button{
+background:#1a73e8;
+color:white;
+border:none;
+padding:10px 15px;
+border-radius:6px;
+cursor:pointer;
+margin-top:10px;
+}
+
+button:hover{
+background:#1557b0;
+}
+
+/* INPUT */
+input, select{
+width:100%;
+padding:10px;
+margin-top:8px;
+border-radius:5px;
+border:1px solid #ccc;
+}
